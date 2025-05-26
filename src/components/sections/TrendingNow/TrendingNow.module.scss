@@ -1,0 +1,116 @@
+.trending {
+  overflow: visible;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: none;
+  margin-top: 245px;
+  padding: get-spacing('spacing-5xl') get-spacing('spacing-xl');
+  gap: get-spacing('spacing-3xl');
+
+  @include md {
+    padding: 0 get-spacing('spacing-11xl') get-spacing('spacing-8xl')
+      get-spacing('spacing-11xl');
+    gap: get-spacing('spacing-5xl');
+    margin-top: 0;
+  }
+
+  // .header {
+  //   position: relative;
+  // }
+
+  .trendingNow {
+    @include typography('display-xs', 'bold');
+    color: get-color('neutral', 25);
+    @include md {
+      @include typography('display-lg', 'bold');
+    }
+  }
+
+  .navButtons {
+    @include md {
+      display: flex;
+      gap: rem-calc(12);
+    }
+  }
+
+  .arrowButton {
+    position: absolute;
+    width: rem-calc(56);
+    height: rem-calc(56);
+    border-radius: 50%;
+    z-index: 10;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+    max-width: unset;
+    background-color: rgba(10, 13, 18, 0.6);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.3s ease;
+    color: get-color('neutral', 25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: rem-calc(28);
+      height: rem-calc(28);
+    }
+
+    &:hover {
+      background-color: rgba(10, 13, 18, 0.8);
+    }
+  }
+
+  .prev {
+    left: rem-calc(8);
+  }
+
+  .hidden {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .next {
+    right: rem-calc(8);
+  }
+
+  .list {
+    width: 100%;
+    overflow: hidden;
+    padding-right: rem-calc(64);
+    display: flex;
+    gap: rem-calc(50);
+    background: linear-gradient(to right, red);
+
+    @include md {
+      padding: 0;
+    }
+
+    :global(.swiper-slide) {
+      width: rem-calc(173);
+      flex-shrink: 0;
+
+      @include md {
+        width: rem-calc(216);
+      }
+    }
+  }
+  .rightGradient {
+    display: none;
+
+    @include md {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: rem-calc(64); // atau 80/120 sesuai Figma
+      height: 100%;
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
+      pointer-events: none;
+      z-index: 5;
+      background-color: red;
+    }
+  }
+}

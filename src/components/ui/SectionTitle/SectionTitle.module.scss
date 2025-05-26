@@ -1,0 +1,8 @@
+.title {
+  color: get-color('neutral', 25);
+  @include typography('display-xs', 'bold');
+
+  @include md {
+    @include typography('display-lg', 'bold')
+  }
+}

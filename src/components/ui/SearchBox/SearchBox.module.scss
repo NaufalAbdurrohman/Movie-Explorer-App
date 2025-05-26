@@ -1,0 +1,112 @@
+.searchBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem-calc(243);
+  height: rem-calc(44);
+  padding: rem-calc(8) rem-calc(16);
+  gap: rem-calc(4);
+  border-radius: get-radius('radius-xl');
+  border: 1px solid get-color('neutral', 800);
+  background-color: #0a0d1299;
+  transition: all 0.3s ease;
+
+  @include md {
+    width: rem-calc(243);
+    height: rem-calc(56);
+    border-radius: get-radius('radius-2xl');
+    gap: rem-calc(8);
+    border: none;
+  }
+
+  &.focused {
+    background-color: #2d2d2d;
+    // border-color: #e41d02;
+    // box-shadow: 0 0 0 2px rgba(#e41d02, 0.3);
+  }
+
+  &.fullWidth {
+    width: 100%;
+    max-width: none;
+  }
+
+  .searchInputContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+    gap: rem-calc(4);
+    width: 100%;
+
+    @include md {
+      gap: rem-calc(8);
+    }
+
+    .searchIconWrapper {
+      display: flex;
+
+      .searchIcon {
+        width: rem-calc(20);
+        height: rem-calc(20);
+
+        @include md {
+          width: rem-calc(24);
+          height: rem-calc(24);
+        }
+      }
+    }
+
+    .searchInput {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: get-color('neutral', 25);
+      @include typography('text-sm', 'regular');
+
+      @include md {
+        @include typography('text-md', 'regular');
+      }
+
+      &::placeholder {
+        color: get-color('neutral', 500);
+        @include typography('text-sm', 'regular');
+
+        @include md {
+          @include typography('text-md', 'regular');
+        }
+      }
+    }
+
+    .clearButtonWrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+
+      @include md {
+        width: rem-calc(32);
+        height: rem-calc(32);
+        border-radius: 50%;
+        transition: background-color 0.2s ease;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .clearIcon {
+        width: rem-calc(16);
+        height: rem-calc(16);
+
+        @include md {
+          width: rem-calc(20);
+          height: rem-calc(20);
+        }
+      }
+    }
+  }
+}

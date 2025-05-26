@@ -1,0 +1,61 @@
+.button {
+  // Layout
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Sizing
+  height: rem-calc(44);
+  padding-block: rem-calc(8);
+  padding-inline: rem-calc(16);
+  gap: rem-calc(8);
+
+  // Visuals
+  border-radius: get-radius('radius-full');
+  color: get-color('neutral', 25);
+  text-align: center;
+
+  // Typography
+  @include typography('text-sm', 'semibold');
+
+  // Interaction
+  cursor: pointer;
+  transition: filter 0.3s ease, transform 0.1s ease;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  .icon {
+    width: rem-calc(18);
+    height: rem-calc(18);
+
+    @include md {
+      width: rem-calc(24);
+      height: rem-calc(24);
+    }
+  }
+
+  // Breakpoint md
+  @include md {
+    height: rem-calc(52);
+    @include typography('text-md', 'semibold');
+  }
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.primary {
+  background-color: #961200;
+}
+
+.secondary {
+  background-color: get-color('neutral', 800);
+  border: 1px solid get-color('neutral', 800);
+}

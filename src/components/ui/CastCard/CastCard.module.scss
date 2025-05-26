@@ -1,0 +1,66 @@
+.castCard {
+  width: 100%;
+  height: rem-calc(84);
+  max-width: rem-calc(360);
+  display: flex;
+  align-items: center;
+  gap: rem-calc(12);
+  border-radius: get-radius('radius-lg');
+  background-color: transparent;
+
+  @include md {
+    width: 100%;
+    height: rem-calc(104);
+  }
+}
+
+
+.image {
+  width: rem-calc(55);
+  height: rem-calc(84);
+  object-fit: cover;
+  border-radius: get-radius('radius-md');
+  flex-shrink: 0;
+
+  @include md {
+    width: rem-calc(69);
+    height: rem-calc(104);
+    border-radius: get-radius('radius-lg');
+  }
+}
+
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: rem-calc(293);
+  height: rem-calc(56);
+  gap: rem-calc(4);
+
+  @include md {
+    width: rem-calc(251);
+    height: rem-calc(64);
+    gap: rem-calc(8);
+  }
+
+}
+
+.name {
+  @include typography('text-sm', 'semibold');
+  color: get-color('neutral', 25);
+
+  @include md {
+    @include typography ('text-md', 'semibold');
+  }
+}
+
+.role {
+  @include typography('text-sm', 'regular');
+  color: get-color('neutral', 400);
+
+  @include md {
+    @include typography ('text-md' ,'regular');
+  }
+}
