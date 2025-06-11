@@ -1,0 +1,180 @@
+.detail {
+  position: relative;
+  width: 100%;
+
+  .backdropWrapper {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: rem-calc(980);
+    z-index: -1;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: rem-calc(500);
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      pointer-events: none;
+    }
+
+    .backdrop {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.75);
+    }
+  }
+
+  .contentWrapper {
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: rem-calc(1160);
+    height: rem-calc(910);
+    margin: 0 auto;
+    gap: get-spacing('spacing-6xl');
+
+    .movie {
+      display: flex;
+      width: 100%;
+      max-width: rem-calc(1160);
+      height: rem-calc(384);
+      justify-content: center;
+      // align-items: center;
+      gap: get-spacing('spacing-4xl');
+
+      .imageWrapper {
+        flex-shrink: 0;
+      }
+
+      .PosterCard {
+        height: rem-calc(384);
+        width: auto;
+        object-fit: cover;
+      }
+
+      .movieDetail {
+        display: flex;
+        flex-direction: column;
+        width: rem-calc(868);
+        height: rem-calc(348);
+        gap: get-spacing('spacing-3xl');
+
+        .title {
+          display: flex;
+          flex-direction: column;
+          width: rem-calc(868);
+          height: rem-calc(102);
+          gap: get-spacing('spacing-4xl');
+          
+          .dateContainer {
+            display: flex;
+            width: rem-calc(868);
+            height: rem-calc(30);
+            align-items: center;
+            gap: get-spacing('spacing-md');
+  
+            .date {
+              color: get-color('neutral', 25);
+            }
+          }
+        }
+
+
+        .actions {
+          display: flex;
+          width: rem-calc(288);
+          height: rem-calc(52);
+          gap: rem-calc(16);
+        }
+
+        .rga {
+          display: flex;
+          width: rem-calc(868);
+          height: rem-calc(146);
+          gap: get-spacing('spacing-2xl');
+
+          .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: rem-calc(276);
+            height: rem-calc(146);
+            padding: rem-calc(20);
+            background-color: rgba(0, 0, 0, 1);
+            border-radius: get-radius('radius-2xl') ;
+            border: 1px solid rgba(37, 43, 55, 1);
+
+            .icon {
+              margin-bottom: rem-calc(8);
+            }
+
+            .rgaContent {
+              display: flex;
+              flex-direction: column;
+              width: rem-calc(236);
+              height: rem-calc(66);
+              align-items: center;
+              gap: get-spacing('spacing-xxs');
+
+              .label {
+                color: get-color('neutral', 300);
+                @include typography ('text-md', 'regular')
+              }
+
+              .name {
+                color: get-color('neutral', 25);
+                @include typography('text-xl', 'semibold')
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .overview {
+      width: 100%;
+      max-width: rem-calc(1160);
+      height: rem-calc(114);
+      gap: get-spacing('spacing-md');
+
+      .overviewTitle {
+        color: get-color('neutral', 25);
+        @include typography('display-md', 'bold')
+      }
+
+      p {
+        color: get-color('neutral', 400);
+        @include typography('text-md', 'regular')
+      }
+    }
+
+    .cac {
+      width: 100%;
+      max-width: rem-calc(1160);
+      height: rem-calc(318);
+      display: flex;
+      flex-direction: column;
+      gap: get-spacing('spacing-3xl');
+
+      .cacTitle {
+        color: get-color('neutral', 25);
+        @include typography('display-md', 'bold')
+      }
+
+      .castCard {
+        display: flex;
+        flex-wrap: wrap;
+        height: rem-calc(248);
+        gap: rem-calc(16);
+      }
+    }
+  }
+}

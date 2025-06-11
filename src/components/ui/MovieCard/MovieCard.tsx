@@ -9,7 +9,7 @@ interface MovieCardProps {
   rating: number;
   isTrending?: boolean;
   rankNumber?: number;
-};
+}
 
 const MovieCard: React.FC<MovieCardProps> = ({
   image,
@@ -21,8 +21,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
   return (
     <div className={styles.movieCard}>
       <div className={styles.imageWrapper}>
-        <img src={Poster} alt={title} className={styles.poster}/>
-        
+        <img src={image || Poster} alt={title} className={styles.poster} /> 
+        {/* kalau image kosong/null, fallback ke MinecraftPoster.jpeg. */}
         {isTrending && typeof rankNumber === 'number' && (
           <div className={styles.trendingBadge}>{rankNumber + 1}</div>
         )}

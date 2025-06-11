@@ -5,12 +5,17 @@ import { Button } from '@/components/ui/Button/Button'
 import PlayIcon from '@/assets/Play.svg'
 
 export interface HeroProps {
-  backdropUrl: string; 
-  title: string;
-  overview: string;
+  backdropUrl?: string; 
+  title?: string;
+  overview?: string;
+  trailerUrl?:string;
 }
 
-export const Hero: React.FC<HeroProps> = ({ backdropUrl, title, overview }) => {
+export const Hero: React.FC<HeroProps> = ({ backdropUrl, title, overview, trailerUrl }) => {
+  const handleWatchTrailer = () => {
+    window.open(trailerUrl, '_blank');
+  };
+
   return (
     <div className={styles.hero}>
       {/* Image Container */}
@@ -28,7 +33,7 @@ export const Hero: React.FC<HeroProps> = ({ backdropUrl, title, overview }) => {
         </div>
 
         <div className={styles.actionsBlock}>
-          <Button variant='primary'>
+          <Button variant='primary' onClick={handleWatchTrailer}>
             Watch Trailer <PlayIcon className={buttonStyles.icon} />
           </Button>
           <Button variant='secondary'>See Detail</Button>

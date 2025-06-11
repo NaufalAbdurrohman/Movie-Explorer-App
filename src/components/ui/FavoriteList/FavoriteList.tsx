@@ -40,14 +40,14 @@ const FavoriteList: React.FC<FavoriteListProps> = ({
             </div>
             <div className={styles.description}>{description}</div>
           </div>
-          <Button className={styles.secondWatchTrailerButton}>
+          <Button className={styles.secondWatchTrailerButton} variant={'primary'}>
             Watch Trailer <PlayIcon className={styles.icon} />
           </Button>
         </div>
       </div>
-
+``
       <div className={styles.actions}>
-        <Button className={styles.watchtrailerButton}>
+        <Button className={styles.watchtrailerButton} variant={'primary'}>
           Watch Trailer
           <PlayIcon className={buttonStyles.icon} />
         </Button>
