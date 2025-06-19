@@ -31,23 +31,24 @@ export const Home: React.FC = () => {
 
   return (
     <div className={styles.homePage}>
-      {/* <Header /> */}
+      <Header />
 
       {/* Hero dari trending #1 */}
-      {/* {topMovie && (
+      {topMovie && (
         <Hero
+          id={topMovie.id}
           backdropUrl={`https://image.tmdb.org/t/p/original${topMovie.backdrop_path}`}
           title={topMovie.title}
           overview={topMovie.overview}
           trailerUrl={heroTrailerUrl}
         />
-      )}    */}
+      )}   
 
       {/* Trending Now */}
-      {/* <TrendingNow movies={trendingMovies} />
-      <NowPlaying /> */}
-      <Detail />
-      {/* <Footer /> */}
+      <TrendingNow movies={trendingMovies} />
+      <NowPlaying />
+      {/* <Detail /> */}
+      <Footer />
     </div>
   );
 };

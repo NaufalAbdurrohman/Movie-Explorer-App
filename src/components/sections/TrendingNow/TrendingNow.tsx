@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState , useEffect} from 'react';
 import MovieCard from '@/components/ui/MovieCard/MovieCard';
 import styles from './TrendingNow.module.scss';
 import 'swiper/css';
@@ -19,6 +19,22 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
   const [isEnd, setIsEnd] = useState(false);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+
+  useEffect (() => {
+    if (
+      swiperInstance &&
+      prevRef.current &&
+      nextRef.current &&
+      swiperInstance.params.navigation
+    ) {
+      swiperInstance.params.navigation.prevEl = prevRef.current;
+      swiperInstance.params.navigation.nextEl = nextRef.current;
+      swiperInstance.navigation.destroy();
+      swiperInstance.navigation.init();
+      swiperInstance.navigation.update();
+    }
+  }, [swiperInstance]);
 
   return (
     <div className={styles.trending}>
@@ -28,8 +44,7 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
           <Button
             ref={prevRef}
             variant='secondary'
-            className={`${styles.arrowButton} ${styles.prev} ${
-              isBeginning ? styles.hidden : ''
+            className={`${styles.arrowButton} ${styles.prev}
             }`}
           >
             <ArrowLeftIcon />
@@ -37,8 +52,7 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
           <Button
             ref={nextRef}
             variant='secondary'
-            className={`${styles.arrowButton} ${styles.next} ${
-              isEnd ? styles.hidden : ''
+            className={`${styles.arrowButton} ${styles.next}
             }`}
           >
             <ArrowRightIcon />
@@ -65,10 +79,11 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
           0: { slidesPerView: 2 },
           1440: { slidesPerView: 6, spaceBetween: 20 } ,
         }}
-        onSlideChange={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
+        // onSlideChange={(swiper) => {
+        //   setIsBeginning(swiper.isBeginning);
+        //   setIsEnd(swiper.isEnd);
+        // }}
+        loop={true}
         className={`swiper-container ${styles.list}`}
       >
         {movies.map((movie, index) => (
@@ -84,6 +99,7 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
               rating={movie.vote_average}
               isTrending={true}
               rankNumber={index}
+              movieId={movie.id}
             />
           </SwiperSlide>
         ))}

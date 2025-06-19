@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './MovieCard.module.scss';
 import Poster from '@/assets/MinecraftPoster.jpeg';
 import Star from '../../../assets/Star 2.png';
@@ -9,6 +10,7 @@ interface MovieCardProps {
   rating: number;
   isTrending?: boolean;
   rankNumber?: number;
+  movieId?: string | number;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
@@ -17,11 +19,22 @@ const MovieCard: React.FC<MovieCardProps> = ({
   rating,
   isTrending = true,
   rankNumber = 0,
+  movieId,
 }: MovieCardProps) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    if (movieId) {
+      navigate(`/detail/${movieId}`);
+    } else {
+      navigate('/detail');
+    }
+  };
+
   return (
-    <div className={styles.movieCard}>
+    <div className={styles.movieCard} onClick={handleCardClick}>
       <div className={styles.imageWrapper}>
-        <img src={image || Poster} alt={title} className={styles.poster} /> 
+        <img src={image || Poster} alt={title} className={styles.poster} />
         {/* kalau image kosong/null, fallback ke MinecraftPoster.jpeg. */}
         {isTrending && typeof rankNumber === 'number' && (
           <div className={styles.trendingBadge}>{rankNumber + 1}</div>

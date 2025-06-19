@@ -74,6 +74,7 @@ export const NowPlaying: React.FC = () => {
             }
             rating={movie.vote_average}
             isTrending={false}
+            movieId={movie.id}
           />
         ))}
       </div>
