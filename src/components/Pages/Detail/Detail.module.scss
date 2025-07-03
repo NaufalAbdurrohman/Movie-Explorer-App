@@ -5,10 +5,8 @@
 
   .backdropWrapper {
     position: relative;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: rem-calc(980);
+    height: rem-calc(345); // mobile height
     z-index: -1;
     overflow: hidden;
 
@@ -18,8 +16,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: rem-calc(500);
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      height: rem-calc(120);
+      background: linear-gradient(to top, rgba(0, 0, 0, 7.9), transparent);
       pointer-events: none;
     }
 
@@ -27,7 +25,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(0.75);
+      filter: brightness(0.55);
+
+    }
+
+    @include md {
+      height: rem-calc(1000);
     }
   }
 
@@ -36,82 +39,125 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    width: rem-calc(1160);
-    // height: rem-calc(910);
-    margin: 0 auto;
-    gap: get-spacing('spacing-6xl');
+    padding: 0 rem-calc(16);
+    gap: get-spacing('spacing-3xl');
+    width: 100%;
+
+    @include md {
+      width: rem-calc(1160);
+      margin: 0 auto;
+      gap: get-spacing('spacing-6xl');
+    }
 
     .movie {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: get-spacing('spacing-2xl');
       width: 100%;
-      max-width: rem-calc(1160);
-      height: rem-calc(384);
-      justify-content: center;
-      // align-items: center;
-      gap: get-spacing('spacing-4xl');
+
+      @include md {
+        flex-direction: row;
+        justify-content: center;
+        height: rem-calc(384);
+        gap: get-spacing('spacing-4xl');
+      }
 
       .imageWrapper {
         flex-shrink: 0;
       }
 
       .PosterCard {
-        height: rem-calc(384);
-        width: auto;
+        width: 100%;
+        height: rem-calc(500);
         object-fit: cover;
+        border-radius: get-radius('radius-xl');
+
+        @include md {
+          height: rem-calc(384);
+          width: auto;
+        }
       }
 
       .movieDetail {
         display: flex;
         flex-direction: column;
-        width: rem-calc(868);
-        height: rem-calc(348);
-        gap: get-spacing('spacing-3xl');
+        gap: get-spacing('spacing-2xl');
+        width: 100%;
+
+        @include md {
+          width: rem-calc(868);
+          height: rem-calc(348);
+          gap: get-spacing('spacing-3xl');
+        }
 
         .title {
           display: flex;
           flex-direction: column;
-          width: rem-calc(868);
-          height: rem-calc(102);
-          gap: get-spacing('spacing-4xl');
-          
+          gap: get-spacing('spacing-sm');
+          width: 100%;
+
+          @include md {
+            gap: get-spacing('spacing-4xl');
+            width: rem-calc(868);
+            height: rem-calc(102);
+          }
+
           .dateContainer {
             display: flex;
-            width: rem-calc(868);
-            height: rem-calc(30);
             align-items: center;
-            gap: get-spacing('spacing-md');
-  
+            gap: get-spacing('spacing-sm');
+
+            @include md {
+              gap: get-spacing('spacing-md');
+              width: rem-calc(868);
+              height: rem-calc(30);
+            }
+
             .date {
               color: get-color('neutral', 25);
             }
           }
         }
 
-
         .actions {
           display: flex;
-          width: rem-calc(288);
-          height: rem-calc(52);
-          gap: rem-calc(16);
+          flex-direction: row;
+          gap: rem-calc(8);
+
+          @include md {
+            flex-direction: row;
+            width: rem-calc(288);
+            height: rem-calc(52);
+            gap: rem-calc(16);
+          }
         }
 
         .rga {
           display: flex;
-          width: rem-calc(868);
-          // height: rem-calc(146);
-          gap: get-spacing('spacing-2xl');
+          flex-direction: row;
+          gap: get-spacing('spacing-xl');
+          width: 100%;
+
+          @include md {
+            flex-direction: row;
+            width: rem-calc(868);
+            gap: get-spacing('spacing-2xl');
+          }
 
           .card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: rem-calc(276);
-            // height: rem-calc(146);
             padding: rem-calc(20);
             background-color: rgba(0, 0, 0, 1);
-            border-radius: get-radius('radius-2xl') ;
+            border-radius: get-radius('radius-2xl');
             border: 1px solid rgba(37, 43, 55, 1);
+            width: 100%;
+
+            @include md {
+              width: rem-calc(276);
+            }
 
             .icon {
               margin-bottom: rem-calc(8);
@@ -120,20 +166,23 @@
             .rgaContent {
               display: flex;
               flex-direction: column;
-              width: rem-calc(236);
-              // height: rem-calc(66);
               align-items: center;
               text-align: center;
               gap: get-spacing('spacing-xxs');
+              width: 100%;
+
+              @include md {
+                width: rem-calc(236);
+              }
 
               .label {
                 color: get-color('neutral', 300);
-                @include typography ('text-md', 'regular')
+                @include typography('text-md', 'regular');
               }
 
               .name {
                 color: get-color('neutral', 25);
-                @include typography('text-xl', 'semibold')
+                @include typography('text-xl', 'semibold');
               }
             }
           }
@@ -143,32 +192,40 @@
 
     .overview {
       width: 100%;
-      max-width: rem-calc(1160);
-      height: rem-calc(114);
       gap: get-spacing('spacing-md');
+      padding: 0 rem-calc(16);
+
+      @include md {
+        max-width: rem-calc(1160);
+        padding: 0;
+      }
 
       .overviewTitle {
         color: get-color('neutral', 25);
-        @include typography('display-md', 'bold')
+        @include typography('display-md', 'bold');
       }
 
       p {
         color: get-color('neutral', 400);
-        @include typography('text-md', 'regular')
+        @include typography('text-md', 'regular');
       }
     }
 
     .cac {
       width: 100%;
-      max-width: rem-calc(1160);
-      // height: rem-calc(318);
       display: flex;
       flex-direction: column;
       gap: get-spacing('spacing-3xl');
+      padding: 0 rem-calc(16);
+
+      @include md {
+        max-width: rem-calc(1160);
+        padding: 0;
+      }
 
       .cacTitle {
         color: get-color('neutral', 25);
-        @include typography('display-md', 'bold')
+        @include typography('display-md', 'bold');
       }
 
       .castCard {

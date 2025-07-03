@@ -1,0 +1,26 @@
+.homePage {
+  width: 100%;
+  // max-width: rem-calc(1700);
+  margin: 0 auto;
+  padding-left: rem-calc(16);
+  padding-right: rem-calc(16);
+
+  @include md {
+    width: rem-calc(1660);
+    padding-left: rem-calc(0);
+    padding-right: rem-calc(0);
+  }
+}
+
+.homeContent {
+  width: 100%;
+  max-width: rem-calc(1700);
+  margin: 0 auto;
+  padding-left: rem-calc(16);
+  padding-right: rem-calc(16);
+
+  @include md {
+    padding-left: rem-calc(0);
+    padding-right: rem-calc(0);
+  }
+}

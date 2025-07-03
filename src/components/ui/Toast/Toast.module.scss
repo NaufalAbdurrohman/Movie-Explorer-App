@@ -1,0 +1,37 @@
+.toastWrapper {
+  position: fixed;
+  top: rem-calc(-114);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  transition: top 0.8s ease;
+  margin-top: rem-calc(50);
+
+  &.show {
+    top: rem-calc(40);
+  }
+
+  .toast {
+    width: rem-calc(300);
+    height: rem-calc(50);
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: get-spacing('spacing-lg');
+    border-radius: get-radius('radius-2xl');
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+
+    p {
+      color: #ffff;
+      @include typography('text-md', 'medium');
+    }
+
+    @include md {
+      width: rem-calc(531);
+      height: rem-calc(52);
+    }
+  }
+}

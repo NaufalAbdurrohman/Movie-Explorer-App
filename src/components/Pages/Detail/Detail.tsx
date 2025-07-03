@@ -13,32 +13,41 @@ import HeartIcon from '@/components/ui/HeartIcon/HeartIcon';
 import PosterCard from '@/assets/mcpc.webp';
 import clsx from 'clsx';
 import CastCard from '@/components/ui/CastCard/CastCard';
-import ImageMan from '@/assets/CastCard.png';
+import ImageMan from '@/assets/missingPeople.jpeg';
 import Footer from '@/components/layout/Footer/Footer';
 import { useParams } from 'react-router-dom';
 import { getMovieDetail, getMovieCredits, getTrailerUrl } from '@/services/tmdb';
+import { Toast } from '@/components/ui/Toast';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { addFavorite, removeFavorite } from '@/store/FavoritesSlice';
 
 export const Detail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [movie, setMovie] = useState<any | null>(null);
   const [trailerUrl, setTrailerUrl] = useState<string>('');
-  const [isFavorite, setIsFavorite] = useState(false);
   const [cast, setCast] = useState<any[]>([]);
   const [age, setAge] = useState<string>('N/A');
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const dispatch = useDispatch();
+  const isFavorite = useSelector((state: RootState) =>
+    state.favorites.items.some((item) => item.id === Number(id))
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
-
       try {
         const data = await getMovieDetail(parseInt(id));
         const trailer = await getTrailerUrl(parseInt(id));
         const credit = await getMovieCredits(parseInt(id));
-
         setMovie(data);
         setTrailerUrl(trailer || '#');
         setCast(credit.cast || []);
-        setAge(rating);
+        setAge(data.adult ? '18+' : '13+');
       } catch (error) {
         console.error('Failed to load movie detail:', error);
       }
@@ -47,12 +56,37 @@ export const Detail: React.FC = () => {
     fetchData();
   }, [id]);
 
+  const handleFavoriteClick = () => {
+    if (!movie) return;
+
+    const movieData = {
+      id: movie.id,
+      poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+      title: movie.title,
+      rating: movie.vote_average,
+      description: movie.overview,
+      trailerUrl: trailerUrl,
+    };
+
+    if (isFavorite) {
+      dispatch(removeFavorite(movie.id));
+      setToastMessage('Removed from Favorites');
+    } else {
+      dispatch(addFavorite(movieData));
+      setToastMessage('Success Add to Favorites');
+    }
+
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   if (!movie) {
     return <div className={styles.detail}>Loading...</div>;
   }
 
   return (
     <div className={styles.detail}>
+      <Toast message={toastMessage} visible={showToast} />
       <Header />
 
       <div className={styles.backdropWrapper}>
@@ -76,6 +110,7 @@ export const Detail: React.FC = () => {
               alt='Movie Poster'
             />
           </div>
+
           <div className={styles.movieDetail}>
             <div className={styles.title}>
               <SectionTitle className={styles.titleMovie}>
@@ -90,36 +125,43 @@ export const Detail: React.FC = () => {
                 </div>
               </div>
             </div>
+
             <div className={styles.actions}>
-              <Button variant='primary' onClick={() => window.open(trailerUrl, '_blank')}>
+              <Button
+                variant='primary'
+                onClick={() => window.open(trailerUrl, '_blank')}
+              >
                 Watch Trailer <PlayIcon className={buttonStyles.icon} />
               </Button>
+
               <div className={styles.favoriteButtonWrapper}>
                 <Button
                   variant='secondary'
                   aria-pressed={isFavorite}
-                  className={clsx(
-                    styles.favoriteButton,
-                    isFavorite && styles.active
-                  )}
-                  onClick={() => setIsFavorite(!isFavorite)}
+                  className={clsx(styles.favoriteButton, isFavorite && styles.active)}
+                  onClick={handleFavoriteClick}
                 >
                   <HeartIcon className={styles.heartIcon} filled={isFavorite} />
                 </Button>
               </div>
             </div>
 
-            {/* Rating Genre Age */}
             <div className={styles.rga}>
               <div className={styles.card}>
-                <div className={styles.icon}><StarIcon /></div>
+                <div className={styles.icon}>
+                  <StarIcon />
+                </div>
                 <div className={styles.rgaContent}>
                   <span className={styles.label}>Rating</span>
-                  <span className={styles.name}>{movie.vote_average.toFixed(1)}</span>
+                  <span className={styles.name}>
+                    {movie.vote_average.toFixed(1)}
+                  </span>
                 </div>
               </div>
               <div className={styles.card}>
-                <div className={styles.icon}><MovieIcon /></div>
+                <div className={styles.icon}>
+                  <MovieIcon />
+                </div>
                 <div className={styles.rgaContent}>
                   <span className={styles.label}>Genre</span>
                   <span className={styles.name}>
@@ -128,36 +170,36 @@ export const Detail: React.FC = () => {
                 </div>
               </div>
               <div className={styles.card}>
-                <div className={styles.icon}><EmojiIcon /></div>
+                <div className={styles.icon}>
+                  <EmojiIcon />
+                </div>
                 <div className={styles.rgaContent}>
                   <span className={styles.label}>Age Limit</span>
-                  <span className={styles.name}>{movie.adult ? '18+' : '13+'}</span>
+                  <span className={styles.name}>{age}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Overview */}
         <div className={styles.overview}>
           <SectionTitle className={styles.overviewTitle}>Overview</SectionTitle>
           <p>{movie.overview}</p>
         </div>
 
-        {/* Cast & Crew (dummy) */}
         <div className={styles.cac}>
           <SectionTitle className={styles.cacTitle}>Cast & Crew</SectionTitle>
           <div className={styles.castCard}>
             {cast.slice(0, 8).map((actor, index) => (
-              <CastCard 
+              <CastCard
                 key={index}
-                name={actor.name} 
-                role={actor.character} 
+                name={actor.name}
+                role={actor.character}
                 img={
                   actor.profile_path
                     ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
                     : ImageMan
-                } 
+                }
               />
             ))}
           </div>

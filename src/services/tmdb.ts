@@ -18,7 +18,7 @@ const tmdb = axios.create({
 
 // ✅ Get Trending Movies
 export const getTrendingMovies = async () => {
-  const res = await tmdb.get('/trending/movie/week');
+  const res = await tmdb.get('/trending/movie/day');
   return res.data.results;
 };
 
@@ -53,3 +53,17 @@ export const getTrailerUrl = async (movieId: number): Promise<string | null> => 
     return null;
   }
 };
+
+export const searchMovies = async (query: string) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${query}&language=en-US`,
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
+      },
+    }
+  );
+  if (!res.ok) throw new Error('Failed to fetch');
+  return await res.json();
+};
+

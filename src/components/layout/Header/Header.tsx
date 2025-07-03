@@ -5,8 +5,9 @@ import SearchIcon from '@/assets/SearchIcon.svg';
 import MenuIcon from '@/assets/Menu.svg';
 import CloseIcon from '@/assets/CloseBlank.svg';
 import clsx from 'clsx';
-import SearchBar from '../../ui/SearchBox/SearchBox';
-import LeftArrowIcon from '@/assets/ArrowLeft.svg'
+import LeftArrowIcon from '@/assets/ArrowLeft.svg';
+import { useNavigate } from 'react-router-dom';
+import SearchBox from '../../ui/SearchBox/SearchBox';
 
 export const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,6 +24,20 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+    }
+  };
+
   return (
     <>
       <header className={clsx(styles.header, scrolled && styles.scrolled)}>
@@ -35,13 +50,16 @@ export const Header: React.FC = () => {
             <a href='/' className={styles.home}>
               Home
             </a>
-            <a href='/favorites' className={styles.favorites}>
+            <button
+              onClick={() => handleNavigate('/favorites')}
+              className={styles.favorites}
+            >
               Favorites
-            </a>
+            </button>
           </nav>
         </div>
         <div className={styles.searchDesktop}>
-          <SearchBar placeholder='Search Movie' />
+          <SearchBox placeholder='Search Movie' onSearch={handleSearch} />
         </div>
         {/* Mobile Toolbar */}
         <div className={styles.mobileToolbar}>
@@ -57,14 +75,14 @@ export const Header: React.FC = () => {
             className={styles.hamburger}
             onClick={() => setMenuOpen((o) => !o)}
             aria-label='Open Menu'
-            >
+          >
             <MenuIcon />
           </button>
         </div>
       </header>
 
       {/* Mobile Menu */}
-      <div className={clsx(styles.mobileMenu, menuOpen && styles. open)}>
+      <div className={clsx(styles.mobileMenu, menuOpen && styles.open)}>
         <div className={styles.menuHeader}>
           <a href='/'>
             <MovieIcon className={styles.menuLogo} />
@@ -75,19 +93,22 @@ export const Header: React.FC = () => {
             onClick={() => setMenuOpen(false)}
           >
             <CloseIcon />
-          </button> 
+          </button>
         </div>
         <div className={styles.navMobile}>
-          <a href='/' onClick={() => setMenuOpen(false)}>
+          <a href='/' onClick={() => setMenuOpen(false)} className={styles.home}>
             Home
           </a>
-          <a href='/favorites' onClick={() => setMenuOpen(false)}>
+          <button
+            onClick={() => handleNavigate('/favorites')}
+            className={styles.favorites}
+          >
             Favorites
-          </a>
+          </button>
         </div>
       </div>
 
-       {/* Mobile Search */}
+      {/* Mobile Search */}
       <div className={clsx(styles.searchMobile, searchOpen && styles.open)}>
         <div className={styles.searchHeader}>
           <button
@@ -97,7 +118,7 @@ export const Header: React.FC = () => {
           >
             <LeftArrowIcon />
           </button>
-          <SearchBar placeholder='Search Movie' fullWidth />
+          <SearchBox placeholder='Search Movie' fullWidth onSearch={handleSearch} />
         </div>
       </div>
     </>

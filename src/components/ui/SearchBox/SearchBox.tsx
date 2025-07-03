@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './SearchBox.module.scss';
 import SearchIcon from '@/assets/SearchIcon.svg';
@@ -20,23 +20,24 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
-    if (onSearch) onSearch(value);
+    setQuery(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && query.trim() && onSearch) {
+      onSearch(query.trim());
+    } else if (e.key === 'Escape') {
+      handleClear();
+    }
   };
 
   const handleClear = () => {
     setQuery('');
-    if (onSearch) onSearch('');
     inputRef.current?.focus();
   };
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape') handleClear();
-  };
 
   return (
     <div

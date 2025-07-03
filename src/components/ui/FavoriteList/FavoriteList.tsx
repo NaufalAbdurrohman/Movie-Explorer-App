@@ -1,82 +1,104 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './FavoriteList.module.scss';
 import clsx from 'clsx';
-import Poster from '@/assets/FavoriteList.png';
 import Star from '@/assets/StarYellow.svg';
 import HeartIcon from '../HeartIcon/HeartIcon';
-import { Button }from '../Button/Button';
-import buttonStyles from '../Button/Button.module.scss'
+import { Button } from '../Button/Button';
+import buttonStyles from '../Button/Button.module.scss';
 import PlayIcon from '@/assets/Play.svg';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store';
+import { removeFavorite } from '@/store/FavoritesSlice';
+import { Link } from 'react-router-dom';
 
-interface FavoriteListProps {
-  poster?: string;
-  title?: string;
-  rating?: number;
-  description?: string;
-}
+type FavoriteListProps = {
+  items: MovieType[];
+  className?: string;
+};
 
-const FavoriteList: React.FC<FavoriteListProps> = ({
-  poster = Poster,
-  title = 'Captain America: Brave New World',
-  rating = 7.9,
-  description = 'After meeting with newly elected U.S. President Thaddeus Ross, Sam finds himself in the middle of an international incident. He must discover the reason behind a nefarious global plot before the true mastermind has the entire world seeing red.',
-}) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
+  const favorites = useSelector((state: RootState) => state.favorites.items);
+  const dispatch = useDispatch();
+
+  if (favorites.length === 0) {
+    return <div className={styles.empty}>You have no favorite movies yet.</div>;
+  }
 
   return (
-    <div className={styles.favoriteList}>
-      <div className={styles.card}>
-        <div className={styles.imageWrapper}>
-          <img src={poster} alt={`${title} Poster`} className={styles.poster} />
-        </div>
-        <div className={styles.text}>
-          <div className={styles.textWrapper}>
-            <div className={styles.title}>{title}</div>
-            <div className={styles.rating}>
-              <Star className={styles.star} />
-              <span className={styles.numericalRating}>
-                {rating.toFixed(1)}/10
-              </span>
+    <div className={clsx(styles.favoriteListWrapper, className)}>
+      {favorites.map((movie) => (
+        <div key={movie.id} className={styles.favoriteList}>
+          <div className={styles.card}>
+            <div className={styles.imageWrapper}>
+              <Link to ={`/detail/${movie.id}`}>
+                <img
+                  src={movie.poster}
+                  alt={`${movie.title} Poster`}
+                  className={styles.poster}
+                />
+              </Link>
             </div>
-            <div className={styles.description}>{description}</div>
+            <div className={styles.text}>
+              <div className={styles.textWrapper}>
+                <div className={styles.title}>{movie.title}</div>
+                <div className={styles.rating}>
+                  <Star className={styles.star} />
+                  <span className={styles.numericalRating}>
+                    {movie.rating.toFixed(1)}/10
+                  </span>
+                </div>
+                <div className={styles.description}>{movie.description}</div>
+              </div>
+              {movie.trailerUrl && (
+                <Button
+                  className={styles.secondWatchTrailerButton}
+                  variant='primary'
+                  onClick={() => window.open(movie.trailerUrl, '_blank')}
+                >
+                  Watch Trailer <PlayIcon className={buttonStyles.icon} />
+                </Button>
+              )}
+            </div>
           </div>
-          <Button className={styles.secondWatchTrailerButton} variant={'primary'}>
-            Watch Trailer <PlayIcon className={styles.icon} />
-          </Button>
-        </div>
-      </div>
-``
-      <div className={styles.actions}>
-        <Button className={styles.watchtrailerButton} variant={'primary'}>
-          Watch Trailer
-          <PlayIcon className={buttonStyles.icon} />
-        </Button>
-        <div className={styles.favoriteButtonWrapper}>
-          <Button
-            variant='secondary'
-            aria-pressed={isFavorite}
-            aria-label={
-              isFavorite ? 'Remove from favorites' : 'Add to favorites'
-            }
-            className={clsx(styles.favoriteButton, isFavorite && styles.active)}
-            onClick={() => setIsFavorite(!isFavorite)}
-          >
-            <HeartIcon className={styles.heartIcon} filled={isFavorite} />
-          </Button>
-        </div>
-      </div>
 
-      <div className={styles.topRightButton}>
-        <Button
-          variant='secondary'
-          className={clsx(styles.favoriteButton, isFavorite && styles.active)}
-          aria-pressed={isFavorite}
-          aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-          onClick={() => setIsFavorite(!isFavorite)}
-        >
-          <HeartIcon className={styles.heartIcon} filled={isFavorite} />
-        </Button>
-      </div>
+          <div className={styles.actions}>
+            {movie.trailerUrl && (
+              <Button
+                className={styles.watchtrailerButton}
+                variant='primary'
+                onClick={() => window.open(movie.trailerUrl, '_blank')}
+              >
+                Watch Trailer
+                <PlayIcon className={buttonStyles.icon} />
+              </Button>
+            )}
+
+            <div className={styles.favoriteButtonWrapper}>
+              <Button
+                variant='secondary'
+                className={clsx(styles.favoriteButton, styles.active)}
+                aria-pressed={true}
+                aria-label='Remove from favorites'
+                onClick={() => dispatch(removeFavorite(movie.id))}
+              >
+                <HeartIcon className={styles.heartIcon} filled={true} />
+              </Button>
+            </div>
+          </div>
+
+          <div className={styles.topRightButton}>
+            <Button
+              variant='secondary'
+              className={clsx(styles.favoriteButton, styles.active)}
+              aria-pressed={true}
+              aria-label='Remove from favorites'
+              onClick={() => dispatch(removeFavorite(movie.id))}
+            >
+              <HeartIcon className={styles.heartIcon} filled={true} />
+            </Button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

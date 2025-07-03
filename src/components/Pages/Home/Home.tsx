@@ -7,6 +7,9 @@ import { getTrailerUrl, getTrendingMovies } from '@/services/tmdb';
 import { NowPlaying } from '../../sections/Now Playing';
 import { Detail } from '../Detail';
 import Footer from '@/components/layout/Footer/Footer';
+import { Toast } from '@/components/ui/Toast';
+import { Favorites } from '../Favorites';
+import FavoriteList from '@/components/ui/FavoriteList/FavoriteList';
 
 export const Home: React.FC = () => {
   const [trendingMovies, setTrendingMovies] = useState<any[]>([]);
@@ -30,25 +33,30 @@ export const Home: React.FC = () => {
   const topMovie = trendingMovies[0];
 
   return (
-    <div className={styles.homePage}>
-      <Header />
+    <>
+      <div className={styles.homePage}>
+        <Header />
+      </div>  
 
-      {/* Hero dari trending #1 */}
-      {topMovie && (
-        <Hero
-          id={topMovie.id}
-          backdropUrl={`https://image.tmdb.org/t/p/original${topMovie.backdrop_path}`}
-          title={topMovie.title}
-          overview={topMovie.overview}
-          trailerUrl={heroTrailerUrl}
-        />
-      )}   
-
-      {/* Trending Now */}
-      <TrendingNow movies={trendingMovies} />
-      <NowPlaying />
-      {/* <Detail /> */}
-      <Footer />
-    </div>
+      <div className={styles.hero}>
+        {/* Hero dari trending #1 */}
+        {topMovie && (
+          <Hero
+            id={topMovie.id}
+            backdropUrl={`https://image.tmdb.org/t/p/original${topMovie.backdrop_path}`}
+            title={topMovie.title}
+            overview={topMovie.overview}
+            trailerUrl={heroTrailerUrl}
+          />
+        )}
+      </div>
+      <div className={styles.homeContent}>
+        {/* Trending Now */}
+        <TrendingNow movies={trendingMovies} />
+        <NowPlaying />
+        <Footer />
+        {/* <Favorites /> */}
+      </div>
+    </>
   );
 };

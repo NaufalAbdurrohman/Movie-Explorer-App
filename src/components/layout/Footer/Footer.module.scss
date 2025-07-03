@@ -5,6 +5,7 @@
   border-top: 1px solid get-color('neutral', 800);
   padding: get-spacing('spacing-3xl') get-spacing('spacing-xl');
   margin-top: rem-calc(50);
+  flex: 1;
 
   .container {
     display: flex;

@@ -21,25 +21,26 @@
     }
 
     @include md {
-      height: rem-calc(810);
-      filter: brightness(0.74);
+      height: rem-calc(1000);
+      filter: brightness(0.55);
     }
   }
 
   .contentWrapper {
     position: absolute;
-    top: rem-calc(223);
+    top: rem-calc(323);
     display: flex;
     flex-direction: column;
     padding: 0 rem-calc(16);
     gap: get-spacing('spacing-3xl');
 
     @include md {
-      top: rem-calc(298);
+      top: rem-calc(400);
       left: rem-calc(140);
       padding: 0;
       width: rem-calc(635);
       gap: get-spacing('spacing-6xl');
+
     }
 
     .textBlock {

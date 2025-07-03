@@ -25,6 +25,7 @@
   // }
 
   .navButtons {
+    display: none;
     @include md {
       display: flex;
       gap: rem-calc(12);

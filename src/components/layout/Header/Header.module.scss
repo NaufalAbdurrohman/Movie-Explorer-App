@@ -2,13 +2,16 @@
   position: fixed;
   height: rem-calc(64);
   padding: 0 rem-calc(16);
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: transparent;
-  transition: background-color 0.3s, backdrop-filter 0.3s, padding 0.3s, box-shadow 0.3s;
+  transition: background-color 0.3s, backdrop-filter 0.3s, padding 0.3s,
+    box-shadow 0.3s;
 
   @include md {
     height: rem-calc(90);
@@ -16,9 +19,9 @@
   }
 
   &.scrolled {
-    background-color: rgba(10,13,18,0.8);
+    background-color: rgba(10, 13, 18, 0.8);
     backdrop-filter: blur(10px);
-    box-shadow: 0 rem-calc(2)rem-calc(8) rgba(0, 0, 0, 0.3)
+    box-shadow: 0 rem-calc(2) rem-calc(8) rgba(0, 0, 0, 0.3);
   }
 
   .logoNavbar {
@@ -50,7 +53,7 @@
         padding: rem-calc(8);
         color: get-color('neutral', 25);
         transition: color 0.3s;
-        @include typography('text-md','regular');
+        @include typography('text-md', 'regular');
 
         &::after {
           content: '';
@@ -60,8 +63,8 @@
           transform: translateX(-50%);
           width: 0;
           height: rem-calc(2);
-          background: #E41D02;
-          transition: width -.3s ease;
+          background: #e41d02;
+          transition: width -0.3s ease;
         }
 
         &:hover::after {
@@ -118,10 +121,10 @@
   }
 }
 
-
 .mobileMenu {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100vh;
   background: #000;
@@ -133,18 +136,18 @@
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 101;
-  
+
   &.open {
     opacity: 1;
     visibility: visible;
   }
-  
+
   .menuHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: rem-calc(64);
-    
+
     .menuLogo {
       width: rem-calc(92);
       height: rem-calc(28);
@@ -172,15 +175,20 @@
     display: flex;
     flex-direction: column;
     gap: get-spacing('spacing-xl');
+    width: rem-calc(89);
     height: rem-calc(108);
 
-    a {
-      padding: get-spacing('spacing-md');
-      gap: get-spacing('spacing-md');
-      @include typography('text-md', 'regular');
+    .home,
+    .favorites {
+      position: relative;
+      display: flex;
+      // align-items: center;
+      // justify-content: center;
+      height: rem-calc(46);
+      padding: rem-calc(8);
       color: get-color('neutral', 25);
-      text-decoration: none;
       transition: color 0.3s;
+      @include typography('text-md', 'regular');
 
       &:hover {
         color: get-color('primary', 300);
@@ -189,10 +197,10 @@
   }
 }
 
-
 .searchMobile {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100vh;
   background: #000;
