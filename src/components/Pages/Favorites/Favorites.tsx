@@ -8,7 +8,7 @@ import Footer from '@/components/layout/Footer/Footer';
 import PlayIcon from '@/assets/Play.svg';
 import HeartIcon from '@/components/ui/HeartIcon/HeartIcon';
 // import { useParams } from 'react-router-dom';
-import { useSelector, UseSelector } from 'react-redux';
+import { useSelector} from 'react-redux';
 import { RootState } from '@/store';
 import MovieBlank from '@/assets/MovieBlank.png';
 

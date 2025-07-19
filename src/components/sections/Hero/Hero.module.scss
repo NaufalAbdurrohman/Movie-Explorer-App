@@ -64,9 +64,17 @@
       .overView {
         @include typography('text-sm', 'regular');
         color: get-color('neutral', 400);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        max-width: 100%;
 
         @include md {
           @include typography('text-md', 'regular');
+          display: flex;
         }
       }
     }

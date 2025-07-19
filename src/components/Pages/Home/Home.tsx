@@ -5,32 +5,46 @@ import { Hero } from '../../sections/Hero';
 import { TrendingNow } from '../../sections/TrendingNow';
 import { getTrailerUrl, getTrendingMovies } from '@/services/tmdb';
 import { NowPlaying } from '../../sections/Now Playing';
-import { Detail } from '../Detail';
 import Footer from '@/components/layout/Footer/Footer';
-import { Toast } from '@/components/ui/Toast';
-import { Favorites } from '../Favorites';
-import FavoriteList from '@/components/ui/FavoriteList/FavoriteList';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { ScrollButton } from '@/components/ui/ScrollButton/ScrollButton';
+import Loader from '@/components/ui/Loader/Loader'; // ✅ Tambahkan ini
 
 export const Home: React.FC = () => {
   const [trendingMovies, setTrendingMovies] = useState<any[]>([]);
   const [heroTrailerUrl, setHeroTrailerUrl] = useState<string>('');
+  const [loading, setLoading] = useState(true); // ✅ Tambahkan loading state
+  const scrollPosition = useSelector((state: RootState) => state.scroll.homePosition);
 
   useEffect(() => {
     const fetchTrending = async () => {
-      // Get Trending From Trending Now
-      const movies = await getTrendingMovies();
-      setTrendingMovies(movies.slice(0, 20));
+      try {
+        setLoading(true); // ✅ Start loading
 
-      // Get Trailer From movie
-      const topMovie = movies[0];
-      const trailer = await getTrailerUrl(topMovie.id);
-      setHeroTrailerUrl(trailer || '#');
+        const movies = await getTrendingMovies();
+        setTrendingMovies(movies.slice(0, 20));
+
+        const topMovie = movies[0];
+        const trailer = await getTrailerUrl(topMovie.id);
+        setHeroTrailerUrl(trailer || '#');
+
+        setTimeout(() => {
+          window.scrollTo(0, scrollPosition);
+        }, 0);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      } finally {
+        setLoading(false); // ✅ End loading
+      }
     };
 
     fetchTrending();
   }, []);
 
   const topMovie = trendingMovies[0];
+
+  if (loading) return <Loader />; // ✅ Tampilkan Loader saat loading
 
   return (
     <>
@@ -39,7 +53,6 @@ export const Home: React.FC = () => {
       </div>  
 
       <div className={styles.hero}>
-        {/* Hero dari trending #1 */}
         {topMovie && (
           <Hero
             id={topMovie.id}
@@ -51,11 +64,10 @@ export const Home: React.FC = () => {
         )}
       </div>
       <div className={styles.homeContent}>
-        {/* Trending Now */}
         <TrendingNow movies={trendingMovies} />
         <NowPlaying />
         <Footer />
-        {/* <Favorites /> */}
+        <ScrollButton />
       </div>
     </>
   );

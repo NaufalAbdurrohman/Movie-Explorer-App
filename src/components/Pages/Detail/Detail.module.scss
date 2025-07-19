@@ -82,12 +82,13 @@
       .movieDetail {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         gap: get-spacing('spacing-2xl');
         width: 100%;
 
         @include md {
           width: rem-calc(868);
-          height: rem-calc(348);
+          height: rem-calc(384);
           gap: get-spacing('spacing-3xl');
         }
 
@@ -99,8 +100,6 @@
 
           @include md {
             gap: get-spacing('spacing-4xl');
-            width: rem-calc(868);
-            height: rem-calc(102);
           }
 
           .dateContainer {
@@ -111,7 +110,6 @@
             @include md {
               gap: get-spacing('spacing-md');
               width: rem-calc(868);
-              height: rem-calc(30);
             }
 
             .date {

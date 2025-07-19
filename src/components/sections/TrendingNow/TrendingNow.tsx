@@ -15,8 +15,6 @@ interface TrendingNowProps {
 }
 
 export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
-  const [isBeginning, setIsBeginning] = useState(true);
-  const [isEnd, setIsEnd] = useState(false);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
@@ -77,7 +75,7 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
         }}
         breakpoints={{
           0: { slidesPerView: 2 },
-          1440: { slidesPerView: 6, spaceBetween: 20 } ,
+          1440: { slidesPerView: 6, spaceBetween: 10 } ,
         }}
         // onSlideChange={(swiper) => {
         //   setIsBeginning(swiper.isBeginning);

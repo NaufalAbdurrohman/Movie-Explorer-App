@@ -55,15 +55,20 @@ export const getTrailerUrl = async (movieId: number): Promise<string | null> => 
 };
 
 export const searchMovies = async (query: string) => {
-  const res = await fetch(
-    `https://api.themoviedb.org/3/search/movie?query=${query}&language=en-US`,
-    {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
+  if (!query) return { results: [] };
+
+  try {
+    const res = await tmdb.get(`/search/movie`, {
+      params: {
+        query,
+        language: 'en-US',
       },
-    }
-  );
-  if (!res.ok) throw new Error('Failed to fetch');
-  return await res.json();
+    });
+
+    return res.data;
+  } catch (error) {
+    console.error('Search error:', error);
+    return { results: [] };
+  }
 };
 

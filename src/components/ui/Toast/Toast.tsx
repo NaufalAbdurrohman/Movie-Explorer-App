@@ -5,6 +5,7 @@ import Icon from '@/assets/Check.svg';
 interface ToastProps {
   message: string;
   visible: boolean;
+  variant?: 'success' | 'warning' | 'error';
 }
 
 export const Toast: React.FC<ToastProps> = ({

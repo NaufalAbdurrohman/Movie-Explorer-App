@@ -1,31 +1,42 @@
+// src/components/ui/MovieList/MovieList.tsx
 import React from 'react';
-import styles from './FavoriteList.module.scss';
+import styles from './MovieList.module.scss';
 import clsx from 'clsx';
 import Star from '@/assets/StarYellow.svg';
 import HeartIcon from '../HeartIcon/HeartIcon';
 import { Button } from '../Button/Button';
 import buttonStyles from '../Button/Button.module.scss';
 import PlayIcon from '@/assets/Play.svg';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavorite, removeFavorite } from '@/store/FavoritesSlice';
 import { RootState } from '@/store';
-import { removeFavorite } from '@/store/FavoritesSlice';
 import { Link } from 'react-router-dom';
-import PlayIconMobile from '@/assets/PlayMobile.svg'
 
-type FavoriteListProps = {
+type MovieListProps = {
   items: MovieType[];
   className?: string;
 };
 
-const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
+const MovieList: React.FC<MovieListProps> = ({ items, className }) => {
   const favorites = useSelector((state: RootState) => state.favorites.items);
   const dispatch = useDispatch();
 
+  const isFavorite = (id: number) => favorites.some((fav) => fav.id === id);
+
+  const toggleFavorite = (movie: MovieType) => {
+    if (isFavorite(movie.id)) {
+      dispatch(removeFavorite(movie.id));
+    } else {
+      dispatch(addFavorite(movie));
+    }
+  };
+
   return (
-    <div className={clsx(styles.favoriteListWrapper, className)}>
-      {favorites.map((movie) => (
-        <div key={movie.id} className={styles.favoriteList}>
+    <div className={clsx(styles.movieListWrapper, className)}>
+      {items.map((movie) => (
+        <div key={movie.id} className={styles.movieList}>
           <div className={styles.card}>
+            {/* Poster */}
             <div className={styles.imageWrapper}>
               <Link to={`/detail/${movie.id}`}>
                 <img
@@ -35,31 +46,37 @@ const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
                 />
               </Link>
             </div>
+
+            {/* Text Info + Desktop Trailer Button */}
             <div className={styles.text}>
               <div className={styles.textWrapper}>
                 <div className={styles.title}>
-                  <Link to={`/detail/${movie.id}`}>{movie.title}</Link>
+                  <Link to={`/detail/${movie.id}`} className={styles.clamp}>{movie.title}</Link>
                 </div>
                 <div className={styles.rating}>
                   <Star className={styles.star} />
                   <span className={styles.numericalRating}>
-                    {movie.rating.toFixed(1)}/10
+                    {movie.rating ? movie.rating.toFixed(1) : '10'}/10
                   </span>
                 </div>
                 <div className={styles.description}>{movie.description}</div>
               </div>
+
+              {/* Desktop-only Watch Trailer */}
               {movie.trailerUrl && (
                 <Button
                   className={styles.secondWatchTrailerButton}
                   variant='primary'
                   onClick={() => window.open(movie.trailerUrl, '_blank')}
                 >
-                  Watch Trailer <PlayIcon className={buttonStyles.icon} />
+                  Watch Trailer
+                  <PlayIcon className={buttonStyles.icon} />
                 </Button>
               )}
             </div>
           </div>
 
+          {/* Mobile-only actions */}
           <div className={styles.actions}>
             {movie.trailerUrl && (
               <Button
@@ -68,32 +85,51 @@ const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
                 onClick={() => window.open(movie.trailerUrl, '_blank')}
               >
                 Watch Trailer
-                <PlayIconMobile  />
+                <PlayIcon className={buttonStyles.icon} />
               </Button>
             )}
 
             <div className={styles.favoriteButtonWrapper}>
               <Button
                 variant='secondary'
-                className={clsx(styles.favoriteButton, styles.active)}
-                aria-pressed={true}
-                aria-label='Remove from favorites'
-                onClick={() => dispatch(removeFavorite(movie.id))}
+                className={clsx(styles.favoriteButton, {
+                  [styles.active]: isFavorite(movie.id),
+                })}
+                aria-pressed={isFavorite(movie.id)}
+                aria-label={
+                  isFavorite(movie.id)
+                    ? 'Remove from favorites'
+                    : 'Add to favorites'
+                }
+                onClick={() => toggleFavorite(movie)}
               >
-                <HeartIcon className={styles.heartIcon} filled={true} />
+                <HeartIcon
+                  className={styles.heartIcon}
+                  filled={isFavorite(movie.id)}
+                />
               </Button>
             </div>
           </div>
 
+          {/* Desktop Favorite Button */}
           <div className={styles.topRightButton}>
             <Button
               variant='secondary'
-              className={clsx(styles.favoriteButton, styles.active)}
-              aria-pressed={true}
-              aria-label='Remove from favorites'
-              onClick={() => dispatch(removeFavorite(movie.id))}
+              className={clsx(styles.favoriteButton, {
+                [styles.active]: isFavorite(movie.id),
+              })}
+              aria-pressed={isFavorite(movie.id)}
+              aria-label={
+                isFavorite(movie.id)
+                  ? 'Remove from favorites'
+                  : 'Add to favorites'
+              }
+              onClick={() => toggleFavorite(movie)}
             >
-              <HeartIcon className={styles.heartIcon} filled={true} />
+              <HeartIcon
+                className={styles.heartIcon}
+                filled={isFavorite(movie.id)}
+              />
             </Button>
           </div>
         </div>
@@ -102,4 +138,4 @@ const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
   );
 };
 
-export default FavoriteList;
+export default MovieList;

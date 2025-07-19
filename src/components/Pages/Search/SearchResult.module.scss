@@ -1,0 +1,74 @@
+.search {
+  display: flex;
+  // align-items: center;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    width: rem-calc(393);
+    // top: rem-calc(154);
+    // left: rem-calc(140);
+    margin: 0 auto;
+    gap: rem-calc(48);
+    margin-top: rem-calc(88);
+    flex: 52;
+
+    @include md{
+      width: rem-calc(1160);
+      margin-top: rem-calc(154);
+    }
+
+    .emptyState {
+      width: rem-calc(300);
+      height: rem-calc(346);
+      margin: 0 auto;
+      text-align: center; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: get-spacing('spacing-3xl');
+
+      @include md {
+        width: rem-calc(300);
+        height: rem-calc(358);
+      }
+
+      .logoText {
+        width: rem-calc(246);
+        height: rem-calc(282);
+        gap: get-spacing('spacing-xl');
+
+        .emptyImage {
+          width: rem-calc(200);
+          height: rem-calc(200);
+        }
+
+        .emptyTitle {
+          color: get-color('base','white');
+          @include typography('text-md','semibold')
+        }
+
+        .emptyText {
+          color: get-color('neutral', 400);
+          @include typography('text-sm','regular')
+        }
+      }
+    }
+
+    .searchList {
+      display: flex;
+      flex-direction: column;
+      gap: rem-calc(32);
+
+      @include md {
+        gap:rem-calc(48)
+      }
+    }
+  }
+}

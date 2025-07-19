@@ -1,61 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { searchMovies } from '@/services/tmdb';
-import MovieCard from '@/components/ui/MovieCard/MovieCard';
+import { searchMovies, getTrailerUrl } from '@/services/tmdb';
+import MovieList from '@/components/ui/MovieList/MovieList';
+import { Header } from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer/Footer';
+import styles from './SearchResult.module.scss';
+import MovieBlank from '@/assets/MovieBlank.png';
 
 const SearchResult: React.FC = () => {
   const { search } = useLocation();
   const query = new URLSearchParams(search).get('q') || '';
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<MovieType[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSearch = async () => {
-      if (query.length < 2) {
-        setResults([]);
-        return;
-      }
-
+      setLoading(true);
       try {
-        setLoading(true);
         const data = await searchMovies(query);
-        setResults(data.results);
+  
+        const mapped = await Promise.all(
+          data.results.map(async (movie: any) => {
+            const trailerUrl = await getTrailerUrl(movie.id);
+  
+            return {
+              id: movie.id,
+              title: movie.title || movie.name || 'Untitled',
+              poster: movie.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : '/fallback-image.jpg',
+              rating: typeof movie.vote_average === 'number' ? movie.vote_average : 0,
+              description: movie.overview || 'No description available',
+              trailerUrl: trailerUrl || 'No trailer found',
+            };
+          })
+        );
+  
+        setResults(mapped);
       } catch (error) {
-        console.error('Search error:', error);
+        console.error('Error fetching search results:', error);
+        setResults([]);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchSearch();
+  
+    if (query.length >= 2) {
+      fetchSearch();
+    } else {
+      setResults([]);
+      setLoading(false);
+    }
   }, [query]);
 
   return (
-    <div style={{ padding: '2rem', color: 'white' }}>
-      <h2>Search results for: <strong>{query}</strong></h2>
+    <div className={styles.search}>
+      <Header />
 
-      {query.length < 2 && (
-        <p>Please enter at least 2 characters to search.</p>
-      )}
+      <div className={styles.content}>
+        {loading ? (
+          <p className={styles.loading}>Loading...</p>
+        ) : results.length === 0 ? (
+          <div className={styles.emptyState}>
+            <div className={styles.logoText}>
+              <img
+                src={MovieBlank}
+                alt='Empty Search'
+                className={styles.emptyImage}
+              />
+              <div className={styles.text}>
+                <h3 className={styles.emptyTitle}>Data Not Found</h3>
+                <p className={styles.emptyText}>Try other keywords</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <MovieList items={results} className={styles.searchList} />
+        )}
+      </div>
 
-      {loading && <p>Loading...</p>}
-
-      {!loading && results.length > 0 && (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '1.5rem',
-          marginTop: '1.5rem',
-        }}>
-          {results.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      )}
-
-      {!loading && query.length >= 2 && results.length === 0 && (
-        <p>No results found.</p>
-      )}
+      <Footer />
     </div>
   );
 };

@@ -1,10 +1,17 @@
-.favoriteList {
+.movieListWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(24);
+}
+
+.movieList {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: rem-calc(224);
   gap: rem-calc(24);
   transition: transform 0.6s ease;
+  position: relative;
 
   &:hover {
     transform: scale(0.9);
@@ -20,6 +27,7 @@
     display: flex;
     gap: rem-calc(16);
     padding-right: rem-calc(23);
+    flex-grow: 1;
 
     @include md {
       gap: rem-calc(24);
@@ -56,11 +64,6 @@
         gap: rem-calc(24);
       }
 
-      a { 
-        color: inherit;
-        text-decoration: none;
-      }
-
       .textWrapper {
         display: flex;
         flex-direction: column;
@@ -83,7 +86,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             width: 100%;
-            max-width: 100%;
 
             &:hover {
               color: azure;
@@ -102,7 +104,7 @@
             @include typography('text-lg', 'medium');
           }
 
-          .starIcon {
+          .star {
             width: rem-calc(18);
             height: rem-calc(18);
 
@@ -116,10 +118,10 @@
         .description {
           color: get-color('neutral', 400);
           @include typography('text-sm', 'regular');
-          overflow: hidden;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
+          overflow: hidden;
 
           @include md {
             @include typography('text-md', 'regular');
@@ -179,6 +181,10 @@
 
     @include md {
       display: flex;
+      position: absolute;
+      right: rem-calc(16);
+      top: rem-calc(16);
+      z-index: 1;
 
       button {
         width: rem-calc(56);

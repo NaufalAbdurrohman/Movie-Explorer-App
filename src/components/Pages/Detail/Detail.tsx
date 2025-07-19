@@ -31,7 +31,6 @@ export const Detail: React.FC = () => {
   const [age, setAge] = useState<string>('N/A');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-
   const dispatch = useDispatch();
   const isFavorite = useSelector((state: RootState) =>
     state.favorites.items.some((item) => item.id === Number(id))
@@ -45,7 +44,7 @@ export const Detail: React.FC = () => {
         const trailer = await getTrailerUrl(parseInt(id));
         const credit = await getMovieCredits(parseInt(id));
         setMovie(data);
-        setTrailerUrl(trailer || '#');
+        setTrailerUrl(trailer || 'Sorry, no trailer yet');
         setCast(credit.cast || []);
         setAge(data.adult ? '18+' : '13+');
       } catch (error) {

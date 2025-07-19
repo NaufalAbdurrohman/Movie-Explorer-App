@@ -11,8 +11,8 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/detail/:id' element={<Detail />} />
         <Route path='/favorites' element={<Favorites />} />
-        <Route path='*' element={<div>404 - Page Not Found</div>} />
-        <Route path="/search" element={<SearchResult />} />
+        <Route path='/search' element={<SearchResult />} />
+        <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>
     </Router>
   );
