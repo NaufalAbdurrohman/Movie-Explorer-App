@@ -15,9 +15,10 @@ import { Link } from 'react-router-dom';
 type MovieListProps = {
   items: MovieType[];
   className?: string;
+  onToggleFavorite?: (action: 'add' | 'remove', movie: MovieType) => void;
 };
 
-const MovieList: React.FC<MovieListProps> = ({ items, className }) => {
+const MovieList: React.FC<MovieListProps> = ({ items, className, onToggleFavorite }) => {
   const favorites = useSelector((state: RootState) => state.favorites.items);
   const dispatch = useDispatch();
 
@@ -26,8 +27,10 @@ const MovieList: React.FC<MovieListProps> = ({ items, className }) => {
   const toggleFavorite = (movie: MovieType) => {
     if (isFavorite(movie.id)) {
       dispatch(removeFavorite(movie.id));
+      onToggleFavorite?.('remove', movie); // ✅
     } else {
       dispatch(addFavorite(movie));
+      onToggleFavorite?.('add', movie); // ✅
     }
   };
 
@@ -51,7 +54,9 @@ const MovieList: React.FC<MovieListProps> = ({ items, className }) => {
             <div className={styles.text}>
               <div className={styles.textWrapper}>
                 <div className={styles.title}>
-                  <Link to={`/detail/${movie.id}`} className={styles.clamp}>{movie.title}</Link>
+                  <Link to={`/detail/${movie.id}`} className={styles.clamp}>
+                    {movie.title}
+                  </Link>
                 </div>
                 <div className={styles.rating}>
                   <Star className={styles.star} />

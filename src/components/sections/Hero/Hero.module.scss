@@ -74,7 +74,9 @@
 
         @include md {
           @include typography('text-md', 'regular');
-          display: flex;
+          display: -webkit-box;
+          -webkit-line-clamp: 6;
+          -webkit-box-orient: vertical;
         }
       }
     }
@@ -90,4 +92,4 @@
       }
     }
   }
-}
+}   

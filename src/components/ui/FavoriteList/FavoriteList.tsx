@@ -10,16 +10,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
 import { removeFavorite } from '@/store/FavoritesSlice';
 import { Link } from 'react-router-dom';
-import PlayIconMobile from '@/assets/PlayMobile.svg'
+import PlayIconMobile from '@/assets/PlayMobile.svg';
 
 type FavoriteListProps = {
-  items: MovieType[];
   className?: string;
+  onRemove?: () => void;
 };
 
-const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
-  const favorites = useSelector((state: RootState) => state.favorites.items);
+const FavoriteList: React.FC<FavoriteListProps> = ({ onRemove, className }) => {
   const dispatch = useDispatch();
+  const favorites = useSelector((state: RootState) => state.favorites.items);
+
+  const handleRemove = (movieId: number) => {
+    dispatch(removeFavorite(movieId));
+    onRemove?.();
+  };
 
   return (
     <div className={clsx(styles.favoriteListWrapper, className)}>
@@ -68,7 +73,7 @@ const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
                 onClick={() => window.open(movie.trailerUrl, '_blank')}
               >
                 Watch Trailer
-                <PlayIconMobile  />
+                <PlayIconMobile />
               </Button>
             )}
 
@@ -78,7 +83,7 @@ const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
                 className={clsx(styles.favoriteButton, styles.active)}
                 aria-pressed={true}
                 aria-label='Remove from favorites'
-                onClick={() => dispatch(removeFavorite(movie.id))}
+                onClick={() => handleRemove(movie.id)}
               >
                 <HeartIcon className={styles.heartIcon} filled={true} />
               </Button>
@@ -91,7 +96,7 @@ const FavoriteList: React.FC<FavoriteListProps> = ({ items, className }) => {
               className={clsx(styles.favoriteButton, styles.active)}
               aria-pressed={true}
               aria-label='Remove from favorites'
-              onClick={() => dispatch(removeFavorite(movie.id))}
+              onClick={() => handleRemove(movie.id)}
             >
               <HeartIcon className={styles.heartIcon} filled={true} />
             </Button>

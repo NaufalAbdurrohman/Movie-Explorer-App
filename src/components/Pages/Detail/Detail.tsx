@@ -22,6 +22,7 @@ import { Toast } from '@/components/ui/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { addFavorite, removeFavorite } from '@/store/FavoritesSlice';
+import Loader from '@/components/ui/Loader/Loader';
 
 export const Detail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,6 +33,7 @@ export const Detail: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const isFavorite = useSelector((state: RootState) =>
     state.favorites.items.some((item) => item.id === Number(id))
   );
@@ -40,6 +42,7 @@ export const Detail: React.FC = () => {
     const fetchData = async () => {
       if (!id) return;
       try {
+        setLoading(true);
         const data = await getMovieDetail(parseInt(id));
         const trailer = await getTrailerUrl(parseInt(id));
         const credit = await getMovieCredits(parseInt(id));
@@ -47,6 +50,7 @@ export const Detail: React.FC = () => {
         setTrailerUrl(trailer || 'Sorry, no trailer yet');
         setCast(credit.cast || []);
         setAge(data.adult ? '18+' : '13+');
+        setLoading(false);
       } catch (error) {
         console.error('Failed to load movie detail:', error);
       }
@@ -79,9 +83,7 @@ export const Detail: React.FC = () => {
     setTimeout(() => setShowToast(false), 3000);
   };
 
-  if (!movie) {
-    return <div className={styles.detail}>Loading...</div>;
-  }
+  if (loading) return <Loader />; 
 
   return (
     <div className={styles.detail}>

@@ -14,7 +14,7 @@ import Loader from '@/components/ui/Loader/Loader'; // ✅ Tambahkan ini
 export const Home: React.FC = () => {
   const [trendingMovies, setTrendingMovies] = useState<any[]>([]);
   const [heroTrailerUrl, setHeroTrailerUrl] = useState<string>('');
-  const [loading, setLoading] = useState(true); // ✅ Tambahkan loading state
+  const [loading, setLoading] = useState(true);
   const scrollPosition = useSelector((state: RootState) => state.scroll.homePosition);
 
   useEffect(() => {

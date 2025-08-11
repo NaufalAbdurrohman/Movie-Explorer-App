@@ -36,7 +36,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   // Desktop: debounce search
   useEffect(() => {
     if (isMobile) return;
-    if (!hasTyped || query.trim().length < 2) return;
+    if (!hasTyped || query.trim().length < 1) return;
 
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
@@ -61,7 +61,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (isMobile && e.key === 'Enter' && query.trim().length >= 2) {
+    if (isMobile && e.key === 'Enter' && query.trim().length >= 1) {
       const trimmed = query.trim();
       const encoded = encodeURIComponent(trimmed);
       const currentQuery = new URLSearchParams(location.search).get('q');
