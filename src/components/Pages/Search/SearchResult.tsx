@@ -8,16 +8,17 @@ import MovieList from '@/components/ui/MovieList/MovieList';
 import MovieBlank from '@/assets/MovieBlank.png';
 import Loader from '@/components/ui/Loader/Loader';
 import Footer from '@/components/layout/Footer/Footer';
+import { Movie } from '@/components/sections/Now Playing';
 
 const SearchResult: React.FC = () => {
   const { search } = useLocation();
   const query = new URLSearchParams(search).get('q') || '';
-  const [results, setResults] = useState<MovieType[]>([]);
+  const [results, setResults] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
 
-  const handleToggleFavorite = (action: 'add' | 'remove', movie: MovieType) => {
+  const handleToggleFavorite = (action: 'add' | 'remove' ) => {
     const message =
       action === 'add' ? `Success add to Favorites` : `Removed from Favorites`;
 

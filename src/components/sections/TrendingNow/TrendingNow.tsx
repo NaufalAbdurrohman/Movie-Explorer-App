@@ -17,7 +17,7 @@ interface TrendingNowProps {
 export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
-  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [swiperInstance] = useState<any>(null);
 
   useEffect (() => {
     if (
@@ -102,7 +102,7 @@ export const TrendingNow: React.FC<TrendingNowProps> = ({ movies }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className={styles.rightGradient} />
+      {/* <div className={styles.rightGradient} /> */}
     </div>
   );
 };

@@ -12,6 +12,8 @@ import { addFavorite, removeFavorite } from '@/store/FavoritesSlice';
 import { RootState } from '@/store';
 import { Link } from 'react-router-dom';
 
+type MovieType = any;
+
 type MovieListProps = {
   items: MovieType[];
   className?: string;
